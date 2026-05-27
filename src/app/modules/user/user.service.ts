@@ -31,7 +31,22 @@ const createUser = async (payload:Partial<IUser>)=>{
 
 }
 
+const updateUser = async (userId:string, payload:Partial<IUser>)=>{
+
+    const isUserExist = await User.findById(userId);
+
+    if(!isUserExist){
+        throw new AppError(404,"user not found")
+    }
+
+    const newUpdateUser = await User.findByIdAndUpdate(userId, payload, {new:true, runValidators:true});
+
+    return newUpdateUser;
+
+}
+
 
  export const userService = {
-    createUser
+    createUser,
+    updateUser
 }

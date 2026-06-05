@@ -31,7 +31,7 @@ const createUser = async (payload:Partial<IUser>)=>{
 
 }
 
-const updateUser = async (userId:string, payload:Partial<IUser>)=>{
+ const updateUser = async (userId:string, payload:Partial<IUser>)=>{
 
     const isUserExist = await User.findById(userId);
 
@@ -45,8 +45,36 @@ const updateUser = async (userId:string, payload:Partial<IUser>)=>{
 
 }
 
+const getAllUser = async ()=>{
+    const user = await User.find();
+
+    const totalUser = await User.countDocuments();
+
+    return {
+        data: user,
+        meta:{
+            total:totalUser
+        }
+    }
+}
+
+const singleUser = async (id:string)=>{
+
+    const user = await User.findById(id).select("-password");
+
+    if(!user){
+        throw new AppError(404,"user not found")
+    }
+
+    return {
+        data: user
+    };
+}
+
 
  export const userService = {
     createUser,
-    updateUser
+    updateUser,
+    getAllUser,
+    singleUser
 }

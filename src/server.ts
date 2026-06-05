@@ -9,8 +9,11 @@ let server:Server
 
 const startServer = async ()=>{
     try {
-        await mongoose.connect("mongodb+srv://mongoDB:mongoBD45780@cluster0.obozyps.mongodb.net/git_ang?retryWrites=true&w=majority&appName=Cluster0')")
-        console.log("connect to DB");
+       
+        console.log(envVers.NODE_ENV)
+        await mongoose.connect(envVers.DB_URL)
+        console.log("contend to DB!!");
+
          
         server = app.listen(envVers.PORT,()=>{
             console.log(`app is listen on the port ${envVers.PORT}`);
@@ -21,7 +24,9 @@ const startServer = async ()=>{
     }
 }
 
- startServer()
+  (async()=>{
+     await startServer()
+  })()
 
  process.on("SIGINT",()=>{
      console.log("SIGINT detected ... server shutting down",);
